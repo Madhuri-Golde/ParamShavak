@@ -3,26 +3,24 @@ package com.ParamShavak.ParamShavak.Model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Date;
-
+import java.util.Collection;
+import java.util.List;
 
 @Document
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class User {
+public class User implements UserDetails {
 
     @Id
     private String id;
@@ -36,7 +34,7 @@ public class User {
     private String lastname;
 
     @Email(message = "Email Address is not valid")
-    private String mailid;
+    private String email;
 
     @NotEmpty(message = "select the gender")
     private String gender;
@@ -66,8 +64,33 @@ public class User {
     @Size(min =6, message = "password must be min of 6 characters")
     private String password;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
 
+    @Override
+    public String getUsername() {
+        return "";
+    }
 
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
 
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
 
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }
